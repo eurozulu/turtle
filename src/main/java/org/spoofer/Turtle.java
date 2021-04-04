@@ -27,16 +27,18 @@ public class Turtle {
     }
 
     private MainPanel mainPanel;
+    private MainMenu mainMenu;
 
     public void start() {
-        Logger.getGlobal().setLevel(Level.FINE);
+        Logger.getGlobal().setLevel(Level.WARNING);
+
+        mainPanel = new MainPanel(turtleState, runCommandListener);
+        mainMenu = new MainMenu(menuListener, runCommandListener);
 
         rootWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         rootWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        mainPanel = new MainPanel(turtleState, runCommandListener);
-        rootWindow.setJMenuBar(new MainMenu(menuListener, runCommandListener));
-
+        rootWindow.setJMenuBar(mainMenu);
         rootWindow.getContentPane().add(mainPanel, BorderLayout.CENTER);
         rootWindow.pack();
         rootWindow.setVisible(true);
@@ -47,90 +49,81 @@ public class Turtle {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                interpreter.run(turtleState, e.getActionCommand());
+                String cmd = e.getActionCommand();
+                interpreter.run(turtleState, cmd);
+                if (e.getID() >= 0)
+                    mainPanel.appendCommandText(cmd + "\n");
+
             } catch (Exception err) {
-                System.err.println(String.format("ERROR: %s", err.getMessage()));
+                err.printStackTrace();
             }
             mainPanel.updateState(turtleState);
             rootWindow.repaint();
         }
     };
 
-    private final ActionListener menuListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            switch (e.getActionCommand()) {
-                case MainMenu.MENU_FILE_EXIT:
-                    System.exit(0);
+    /**
+     * Menulistener catches events from menu events and process the action
+     */
+    private final ActionListener menuListener = e -> {
+        switch (e.getActionCommand()) {
+            case MainMenu.MENU_FILE_EXIT:
+                System.exit(0);
 
-                case MainMenu.MENU_FILE_OPEN:
-                    openFile();
-                    break;
+            case MainMenu.MENU_FILE_OPEN:
+                String s = FileTools.openFile(mainPanel.getCommandText().trim().length() > 0);
+                if (s != null) {
+                    mainPanel.setCommandText(s);
+                }
+                break;
 
-                case MainMenu.MENU_FILE_SAVE:
-                    saveFile();
-                    break;
-
-                case MainMenu.MENU_VIEW_TURTLE:
-                    turtleState.isVisible = ((JCheckBoxMenuItem)e.getSource()).isSelected();
-                    rootWindow.repaint();
+            case MainMenu.MENU_FILE_SAVE: {
+                String data = mainPanel.getCommandText();
+                if (data.trim().length() == 0) {
+                    JOptionPane.showConfirmDialog(null,
+                            "Warning. The command window is empty",
+                            "There is nothing to save!",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                String path = FileTools.requestSaveFilePath();
+                if (path == "")
+                    return;
+                try {
+                    FileTools.saveFile(path, data);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                break;
             }
+
+            case MainMenu.MENU_FILE_EXPORT: {
+                if (turtleState.getTurtlePath().length <= 1) {
+                    JOptionPane.showConfirmDialog(null,
+                            "Warning. The turtle path is empty",
+                            "There is nothing to export!",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                String format = ((MenuItem)e.getSource()).getName();
+                String path = FileTools.requestSaveFilePath();
+                try {
+                    mainPanel.exportPath(path, format);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+
+            case MainMenu.MENU_VIEW_TURTLE:
+                turtleState.isVisible = ((JCheckBoxMenuItem)e.getSource()).isSelected();
+                rootWindow.repaint();
+
+            case MainMenu.MENU_COMMAND_RUN_ALL:
+                String cmd = mainPanel.getCommandText().trim().replace("\n", " ");
+                runCommandListener.actionPerformed(new ActionEvent(e.getSource(), -1, cmd));
         }
     };
 
 
-    private void openFile() {
-        if (mainPanel.getCommandText().trim().length() > 0) {
-            if (JOptionPane.showConfirmDialog(null,
-                    "Warning. This will overwrite the existing command window",
-                    "Are you sure you wish to discard the existing command window?",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION)
-                return;
-        }
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Logo files", "logo"));
-        int result = fileChooser.showOpenDialog(null);
-        if (result != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-        try {
-            String fileText = FileTools.readFile(fileChooser.getSelectedFile());
-            mainPanel.setCommandText(fileText);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void saveFile() {
-
-        String data = mainPanel.getCommandText();
-        if (data.trim().length() == 0) {
-            JOptionPane.showConfirmDialog(null,
-                    "Warning. The command window is empty",
-                    "There is nothing to save!",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        int result = fileChooser.showSaveDialog(null);
-        if (result != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-        String path = fileChooser.getSelectedFile().getAbsolutePath();
-        if (!path.endsWith(".logo")) {
-            path += ".logo";
-        }
-        try {
-            FileTools.saveFile(path, data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

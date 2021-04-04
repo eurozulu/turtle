@@ -38,15 +38,42 @@ public class MainPanel extends JPanel {
         commands.setText(s);
     }
 
+    public void appendCommandText(String s) {
+        commands.append(s);
+    }
+
     public String getCommandText() {
         return commands.getText();
+    }
+
+    public void exportPath(String path, String format) throws IOException {
+        turtlePanel.exportPath(path, format);
     }
 
     public void updateState(TurtleState turtleState) {
         statusBar.update(turtleState);
     }
 
+    public String getLastLine() {
+        int pos = commands.getCaretPosition() - 1;
+        String[] lines = commands.getText().split("\n", -1);
+
+        int lineNumber = 0;
+        int len = 0;
+        while (lineNumber < lines.length) {
+            len += lines[lineNumber].length();
+            if (len >= pos)
+                break;
+            lineNumber++;
+            len++;
+        }
+        if (lineNumber >= lines.length)
+            lineNumber = lines.length > 0 ? lines.length - 1 : 0;
+        return lines[lineNumber];
+    }
+
     private void buildMainPanel(ActionListener runListener) {
+
         commands.setColumns(50);
         commands.setEditable(true);
 
@@ -63,15 +90,15 @@ public class MainPanel extends JPanel {
             public void keyReleased(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_ENTER:
-                        String line = getCurrentLine().trim();
+                        String line = getLastLine().trim();
                         if (line.length() > 0)
-                            runListener.actionPerformed(new ActionEvent(commands, 1, line));
+                            runListener.actionPerformed(new ActionEvent(commands, -1, line));
                 }
             }
         });
 
         JPopupMenu commandPopup = new JPopupMenu("Command");
-        console.add(commandPopup);
+        commands.add(commandPopup);
         JMenuItem clearCmdMenu = new JMenuItem("Clear");
         clearCmdMenu.addActionListener(new ActionListener() {
             @Override
@@ -89,6 +116,8 @@ public class MainPanel extends JPanel {
                 }
             }
         });
+
+
 
         console.setPreferredSize(new Dimension(200, 200));
         console.setEditable(false);
@@ -127,24 +156,6 @@ public class MainPanel extends JPanel {
         this.add(turtlePanel, BorderLayout.CENTER);
         this.add(cmdScroll, BorderLayout.EAST);
         this.add(lowerPanel, BorderLayout.SOUTH);
-    }
-
-    private String getCurrentLine() {
-        int pos = commands.getCaretPosition() - 1;
-        String[] lines = commands.getText().split("\n", -1);
-
-        int lineNumber = 0;
-        int len = 0;
-        while (lineNumber < lines.length) {
-            len += lines[lineNumber].length();
-            if (len >= pos)
-                break;
-            lineNumber++;
-            len++;
-        }
-        if (lineNumber >= lines.length)
-            lineNumber = lines.length > 0 ? lines.length - 1 : 0;
-        return lines[lineNumber];
     }
 
     private void captureOutputStreams() {

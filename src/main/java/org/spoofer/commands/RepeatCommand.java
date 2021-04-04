@@ -23,7 +23,11 @@ public class RepeatCommand implements Command {
         if (codeBlock.isEmpty()) {
             throw new IllegalArgumentException("missing repeat block.  Provide a block of commands embraced in [...]");
         }
-        args.removeAll(codeBlock);
+
+        // Clean code block from args
+        for (int i = 0; i < codeBlock.size() && !args.isEmpty(); i++) {
+            args.remove(0);
+        }
         // strip off block tokens
         codeBlock.remove(0);
         codeBlock.remove(codeBlock.size() - 1);

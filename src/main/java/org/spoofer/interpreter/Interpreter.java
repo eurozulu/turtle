@@ -201,6 +201,8 @@ public class Interpreter {
 
         macros.put("cleanscreen", new Macro("home clean"));
         macros.put("cs", new Macro("cleanscreen"));
+        macros.put("hm", new Macro("home"));
+        macros.put("cn", new Macro("clean"));
 
         macros.put("showturtle", new Macro("turtle true"));
         macros.put("st", new Macro("turtle true"));

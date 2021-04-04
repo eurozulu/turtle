@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.concurrent.Flow;
 
 public class MainMenu extends JMenuBar {
 
@@ -17,16 +18,18 @@ public class MainMenu extends JMenuBar {
     public static final String MENU_VIEW_COMMAND = "view_command";
     public static final String MENU_VIEW_CONSOLE = "view_console";
     public static final String MENU_VIEW_TURTLE = "view_turtle";
+    public static final String MENU_COMMAND_RUN = "command_run";
+    public static final String MENU_COMMAND_RUN_ALL = "command_runall";
 
     private static final String BUTTON_COMMAND_FORWARD = "forward 10";
     private static final String BUTTON_COMMAND_LEFT = "left 90";
     private static final String BUTTON_COMMAND_RIGHT = "right 90";
     private static final String BUTTON_COMMAND_PEN = "pen %s";
-    
-    public MainMenu(ActionListener actionListener, ActionListener runListener) {
-        this.add(buildFileMenu(actionListener));
-        this.add(buildViewMenu(actionListener));
-        this.add(buildButtonBar(runListener));
+
+    public MainMenu(ActionListener menuListener, ActionListener runListener) {
+        this.add(buildFileMenu(menuListener));
+        this.add(buildViewMenu(menuListener));
+        buildButtonBar(menuListener, runListener);
     }
 
     private JMenu buildFileMenu(ActionListener menuListener) {
@@ -47,12 +50,36 @@ public class MainMenu extends JMenuBar {
 
         fileMenu.addSeparator();
         
-        JMenuItem fileExport = new JMenuItem("Export");
+        JMenu fileExport = new JMenu("Export");
         fileExport.setMnemonic(KeyEvent.VK_X);
-        fileExport.setActionCommand(MENU_FILE_EXPORT);
-        fileExport.addActionListener(menuListener);
+
+        JMenuItem exportPng = new JMenuItem("PNG");
+        exportPng.setActionCommand(MENU_FILE_EXPORT);
+        exportPng.setName("png");
+        exportPng.addActionListener(menuListener);
+        fileExport.add(exportPng);
+
+        JMenuItem exportJpg = new JMenuItem("Jpeg");
+        exportJpg.setActionCommand(MENU_FILE_EXPORT);
+        exportPng.setName("jpg");
+        exportJpg.addActionListener(menuListener);
+        fileExport.add(exportJpg);
+
+        JMenuItem exportGif = new JMenuItem("GIF");
+        exportGif.setActionCommand(MENU_FILE_EXPORT);
+        exportPng.setName("gif");
+        exportGif.addActionListener(menuListener);
+        fileExport.add(exportGif);
+
+        JMenuItem exportBmp = new JMenuItem("Bitmap");
+        exportBmp.setActionCommand(MENU_FILE_EXPORT);
+        exportPng.setName("bmp");
+        exportBmp.addActionListener(menuListener);
+        fileExport.add(exportBmp);
+
         fileMenu.add(fileExport);
-        
+
+
         fileMenu.addSeparator();
         
         JMenuItem fileExit = new JMenuItem("Exit");
@@ -92,7 +119,7 @@ public class MainMenu extends JMenuBar {
         return menuView;
     }
 
-    private JPanel buildButtonBar(ActionListener runListener) {
+    private void buildButtonBar(ActionListener menuListener, ActionListener runListener) {
         JButton btnLeft = new JButton("Left");
         btnLeft.setActionCommand(BUTTON_COMMAND_LEFT);
         btnLeft.addActionListener(runListener);
@@ -105,10 +132,11 @@ public class MainMenu extends JMenuBar {
         btnRight.setActionCommand(BUTTON_COMMAND_RIGHT);
         btnRight.addActionListener(runListener);
 
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        buttons.add(btnLeft);
-        buttons.add(btnForward);
-        buttons.add(btnRight);
+        JPanel buttonsNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        buttonsNav.add(btnLeft);
+        buttonsNav.add(btnForward);
+        buttonsNav.add(btnRight);
+
 
         JCheckBoxMenuItem penCheck = new JCheckBoxMenuItem("Draw");
         penCheck.addActionListener(new ActionListener() {
@@ -117,10 +145,27 @@ public class MainMenu extends JMenuBar {
                 runListener.actionPerformed(new ActionEvent(penCheck, 2, String.format(BUTTON_COMMAND_PEN, penCheck.isSelected())));
             }
         });
-        buttons.add(new JLabel(""));
-        buttons.add(penCheck);
+        JPanel buttonsDraw = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        buttonsDraw.add(penCheck);
 
-        return buttons;
+
+        JButton btnRunAll = new JButton("Run All");
+        btnRunAll.setActionCommand(MENU_COMMAND_RUN_ALL);
+        btnRunAll.addActionListener(menuListener);
+
+        JButton btnRunLine = new JButton("Run line");
+        btnRunLine.setActionCommand(MENU_COMMAND_RUN);
+        btnRunLine.addActionListener(menuListener);
+
+        JPanel buttonsRun = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        buttonsRun.add(btnRunAll);
+        buttonsRun.add(btnRunLine);
+
+        //JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 5));
+        this.add(buttonsNav);
+        this.add(buttonsDraw);
+        this.add(buttonsRun);
+
     }
 
 }

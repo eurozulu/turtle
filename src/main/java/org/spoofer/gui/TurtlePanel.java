@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -25,6 +26,18 @@ public class TurtlePanel extends JPanel {
         this.turtleState = turtleState;
     }
 
+    public void exportPath(String path, String format) throws IOException {
+        // https://stackoverflow.com/questions/5655908/export-jpanel-graphics-to-png-or-gif-or-jpg/5656017
+        String ext = "." + format.toLowerCase();
+        if (!path.toLowerCase().endsWith(ext))
+            path = path + ext;
+
+        BufferedImage bi = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+        this.paint(g);
+        g.dispose();
+        ImageIO.write(bi, format, new File(path));
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

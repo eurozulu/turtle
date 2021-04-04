@@ -1,10 +1,50 @@
 package org.spoofer;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.nio.CharBuffer;
 
+/**
+ * Simple Helper functions for writing strings in and out of files
+ */
 public class FileTools {
 
+    public static String openFile(boolean warnOverwrite) {
+        if (warnOverwrite) {
+            if (JOptionPane.showConfirmDialog(null,
+                    "Warning. This will overwrite the existing command window",
+                    "Are you sure you wish to discard the existing command window?",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION)
+                return null;
+        }
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Logo files", "logo"));
+        int result = fileChooser.showOpenDialog(null);
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return null;
+        }
+        try {
+            return FileTools.readFile(fileChooser.getSelectedFile());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static String requestSaveFilePath() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showSaveDialog(null);
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return "";
+        }
+        return fileChooser.getSelectedFile().getAbsolutePath();
+    }
 
 
     public static String readFile(File f) throws IOException {
