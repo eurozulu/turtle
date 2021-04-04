@@ -4,16 +4,25 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class StackMap implements Stack {
+/**
+ * {@link StateMap} is an implementation of {@link State} using a backing {@link HashMap} of root properties
+ * and providing the string name lookup on the contents.
+ */
+public class StateMap implements State {
     private final Map<String, Object> values = new HashMap<>();
 
+    /**
+     * Adds a new root propeerty to the statemape
+     * @param name the key name of the property
+     * @param value the value it maps to
+     */
     public <T> void put(String name, T value) {
         values.put(name, value);
     }
 
     @Override
     public <T> T get(String name) {
-        if (name == null || name.trim().length() == 0) {
+        if (name == null || name.length() == 0) {
             return null;
         }
         List<String> keys = new ArrayList<>(Arrays.asList(name.split("\\.")));
@@ -69,6 +78,6 @@ public class StackMap implements Stack {
                 return m;
             }
         }
-        throw new IllegalArgumentException(String.format("'%s' is unknown"));
+        throw new IllegalArgumentException(String.format("'%s' is unknown", key));
     }
 }

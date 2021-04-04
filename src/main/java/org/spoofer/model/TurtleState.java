@@ -4,35 +4,52 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@link TurtleState} maintains the current state of the turtle and a history of its previous states.
+ */
 public class TurtleState {
 
     public static final int DEFAULT_WIDTH = 200;
     public static final int DEFAULT_HEIGHT = 200;
 
-    private final Dimension contraint = new Dimension();
+    // Area in which the turtle can move
+    private final Dimension contraint = new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    // State History
     private final List<TurtlePosition> turtlePath = new ArrayList<>();
 
+    // If turtle should be drawn on screen (Has no effect on Turtle state)
     public boolean isVisible = true;
 
     public TurtleState() {
-        clearPath();
+        centerTurtle();
     }
 
+    /**
+     * gets the current state of the turtle
+     * @return the current state
+     */
     public TurtlePosition getTurtlePosition() {
-        if (turtlePath.isEmpty())
-            return null;
         return turtlePath.get(turtlePath.size() - 1);
     }
 
+    /**
+     * gets the full history of turtle states
+     * @return state history
+     */
     public TurtlePosition[] getTurtlePath() {
         TurtlePosition[] positions = new TurtlePosition[turtlePath.size()];
         turtlePath.toArray(positions);
         return positions;
     }
 
+    /**
+     * clears the state history of the turtle.
+     *
+     */
     public void clearPath() {
+        TurtlePosition pos = getTurtlePosition();
         turtlePath.clear();
-        centerTurtle();
+        turtlePath.add(pos);
     }
 
     public void centerTurtle() {

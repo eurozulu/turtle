@@ -65,8 +65,7 @@ public class TurtlePanel extends JPanel {
             throw new IllegalStateException("image not found! " + name);
         }
         try {
-            BufferedImage bufferedImage = ImageIO.read(inputStream);
-            return bufferedImage;
+            return ImageIO.read(inputStream);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to load image  resource", e);
         }
