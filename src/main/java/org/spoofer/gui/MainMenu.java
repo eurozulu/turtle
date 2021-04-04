@@ -61,19 +61,19 @@ public class MainMenu extends JMenuBar {
 
         JMenuItem exportJpg = new JMenuItem("Jpeg");
         exportJpg.setActionCommand(MENU_FILE_EXPORT);
-        exportPng.setName("jpg");
+        exportJpg.setName("jpg");
         exportJpg.addActionListener(menuListener);
         fileExport.add(exportJpg);
 
         JMenuItem exportGif = new JMenuItem("GIF");
         exportGif.setActionCommand(MENU_FILE_EXPORT);
-        exportPng.setName("gif");
+        exportGif.setName("gif");
         exportGif.addActionListener(menuListener);
         fileExport.add(exportGif);
 
         JMenuItem exportBmp = new JMenuItem("Bitmap");
         exportBmp.setActionCommand(MENU_FILE_EXPORT);
-        exportPng.setName("bmp");
+        exportGif.setName("bmp");
         exportBmp.addActionListener(menuListener);
         fileExport.add(exportBmp);
 

@@ -105,7 +105,7 @@ public class Turtle {
                             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                String format = ((MenuItem)e.getSource()).getName();
+                String format = ((JMenuItem)e.getSource()).getName();
                 String path = FileTools.requestSaveFilePath();
                 try {
                     mainPanel.exportPath(path, format);
@@ -113,14 +113,17 @@ public class Turtle {
                     ioException.printStackTrace();
                 }
             }
+            break;
 
             case MainMenu.MENU_VIEW_TURTLE:
                 turtleState.isVisible = ((JCheckBoxMenuItem)e.getSource()).isSelected();
                 rootWindow.repaint();
+                break;
 
             case MainMenu.MENU_COMMAND_RUN_ALL:
                 String cmd = mainPanel.getCommandText().trim().replace("\n", " ");
                 runCommandListener.actionPerformed(new ActionEvent(e.getSource(), -1, cmd));
+                break;
         }
     };
 

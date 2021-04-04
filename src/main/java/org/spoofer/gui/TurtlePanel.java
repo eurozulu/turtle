@@ -32,11 +32,14 @@ public class TurtlePanel extends JPanel {
         if (!path.toLowerCase().endsWith(ext))
             path = path + ext;
 
+        boolean isVis = turtleState.isVisible;
+        turtleState.isVisible = false;
         BufferedImage bi = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
         this.paint(g);
         g.dispose();
         ImageIO.write(bi, format, new File(path));
+        turtleState.isVisible = isVis;
     }
 
     @Override
