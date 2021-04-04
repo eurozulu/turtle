@@ -72,11 +72,12 @@ Additional control commands:
 | --------|---------------|-------------|------------ | ------- |
 | `pen` | `pu, pd, draw`  | Single argument of "yes/no" or up/down or true false | Controls the pen state.  When pen is down the path is drawn. | `pen down` |
 | `hideturtle`  | `ht` | none | Hides the turtle, leaving just the path on screen | `hideturtle` |
-| `showturtle`  | `st` | none | Shows the turtle, leaving just the path on screen | `showturtle` |
+| `showturtle`  | `st` | none | Shows the turtle, showing the path and turtle on screen | `showturtle` |
 | `home`  | `hm` | none | Moves the turtle to the center of the screen without leaving a path.  Current path is unchanged. | `home` |
 | `clean`  | `cn` | none | Clears the current path, leaving turtle in position | `clean` |
 | `cleanscreen`  | `cs` | none | Clears the current path, returns turtle to home | `cleanscreen` |
   
+
 ### Repeating
 Commands may be repeated any number of times using the `repeat` command.  
 Repeat has a 'count' number to define the number of times to repeat, followed by a 'code block',  
@@ -90,7 +91,7 @@ Patterns are predefined commands grouped into a single name.
 They are similar to simple 'functions'.  Once defined, the pattern name can be used to execute all the grouped commands in the pattern.  
   
 A pattern is defined using the `pattern` command, followed by the pattern name, followed by a 'code block',  
-A series of commands unclosed inside square brackets.  
+A series of commands enclosed inside square brackets.  
 e.g. `pattern square [ fd 10 lt 90 fd 10 lt 90 fd 10 lt 90 fd 10 ]`  
 Defining the pattern has no output, but creates the new `square` command.  
 After defining the pattern it may be called by simply giving its name.  
@@ -99,6 +100,14 @@ e.g. `square`
 Both `repeat` and `pattern` may be nested inside each other.  
 e.g. `pattern square [ repeat 4 [ fd 10 lt 90 ]]`  
 This will create a new pattern which generates exxactly the same as the previous square example.  
+  
+#### Pattern Arguments
+Patterns may define arguments, which must be provided when the pattern is called.  
+To define an argument use the `{}` placeholder to mark where that value should appear within the pattern.  
+e.g. `pattern square [ repeat 4 [  fd {} lt 90 ]]`  
+The forward command will use the argument following `square` to define the forward distance.  
+`square 40` or `square 3` draws squares of different sizes.  
+Arguments are placed in each placehold in the order they appear.
 
 ----  
 

@@ -1,0 +1,5 @@
+cleanscreen
+pattern triangle [ repeat 3 [ fd 50 lt 120 ] ]
+pen down
+repeat 5 [ triangle lt 72 ]
+
