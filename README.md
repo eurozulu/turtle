@@ -129,7 +129,9 @@ Instruction commands:
 ----  
 
 #### Files
-The command window can be saved using the file menu or replaced with a file loaded via the open menu.
+The command window can be saved using the file menu or replaced with a file loaded via the open menu.  
+See the 'examples' directory for sample logo file.  Use the 'File/Open' menu to select the logo example,  
+then click "run all" to execute the sample.
 
 
 #### All Commands
@@ -142,6 +144,7 @@ The command window can be saved using the file menu or replaced with a file load
 | `right`  | `rt` | Single number of the angle to rotate | Rotates the turtle by the number of degrees | `rt 90` |
 | `rotate`  | - | Single number of the angle to rotate.<br />May be positive or negative number.  | Rotates the turtle by the number of degrees | `rotate 90` |
 | `pen` | `pu, pd, draw`  | Single argument of "yes/no" or up/down or true false | Controls the pen state.  When pen is down the path is drawn. | `pen down` |
+| `colour` | `color, col, paint`  | Single argument of named colour or RGB: #RRGGBB hex number | Controls the pen colour. | `col red`, `color cyan` `col #FFFF00` |
 | `hideturtle`  | `ht` | none | Hides the turtle, leaving just the path on screen | `hideturtle` |
 | `showturtle`  | `st` | none | Shows the turtle, showing the path and turtle on screen | `showturtle` |
 | `home`  | `hm` | none | Moves the turtle to the center of the screen without leaving a path.  Current path is unchanged. | `home` |
