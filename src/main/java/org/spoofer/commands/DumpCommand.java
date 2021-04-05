@@ -24,7 +24,7 @@ public class DumpCommand implements Command {
         OutputStreamWriter out = fOut != null ? new OutputStreamWriter(fOut) : new OutputStreamWriter(System.out);
         TurtlePosition[] path = state.get("turtle.turtlePath");
         Dimension constraint = state.get("turtle.contraint");
-        Map<String, String> patterns = state.get("runtime.patterns");
+        Map<String, String> patterns = state.get("patterns");
 
         try {
             out.write("{\n");
@@ -38,7 +38,7 @@ public class DumpCommand implements Command {
                     first = false;
                 }
                 out.write(String.format("{ \"x\": %d, \"y\": %d, \"rotation\": %d, \"pen\": %s }",
-                        pos.x, pos.y, Math.round(pos.rotation), Boolean.toString(pos.imprinted)) );
+                        pos.x, pos.y, Math.round(pos.rotation), pos.imprinted) );
             }
             out.write("]");
 

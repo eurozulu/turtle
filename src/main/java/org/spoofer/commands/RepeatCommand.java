@@ -1,8 +1,9 @@
 package org.spoofer.commands;
 
 import org.spoofer.interpreter.Interpreter;
+import org.spoofer.interpreter.Process;
+import org.spoofer.interpreter.Runtime;
 import org.spoofer.interpreter.State;
-import org.spoofer.model.TurtleState;
 
 import java.util.List;
 
@@ -34,11 +35,10 @@ public class RepeatCommand implements Command {
 
         String cmdLine = String.join(" ", codeBlock);
 
-        TurtleState turtle = state.get("turtle");
         Interpreter runtime = state.get("runtime");
-
+        Process p = new Process(state, cmdLine, null);
         for (int i = 0; i < repeat; i++) {
-            runtime.run(turtle, cmdLine);
+            runtime.run(p);
         }
     }
 }

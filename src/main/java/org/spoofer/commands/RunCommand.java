@@ -1,9 +1,9 @@
 package org.spoofer.commands;
 
 import org.spoofer.interpreter.Interpreter;
+import org.spoofer.interpreter.Process;
 import org.spoofer.interpreter.State;
 import org.spoofer.misc.FileTools;
-import org.spoofer.model.TurtleState;
 
 import java.util.List;
 
@@ -21,7 +21,6 @@ public class RunCommand implements Command {
 
         String cmdline = FileTools.readFile(args.remove(0));
         Interpreter runtime = state.get("runtime");
-        TurtleState turtle = state.get("turtle");
-        runtime.run(turtle, cmdline);
+        runtime.run(new Process(state, cmdline, null));
     }
 }

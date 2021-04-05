@@ -11,9 +11,15 @@ import java.util.*;
 public class StateMap implements State {
     private final Map<String, Object> values = new HashMap<>();
 
+    public StateMap() {
+        put("env", System.getenv());
+        put("patterns", new HashMap<String, Macro>());
+    }
+
     /**
      * Adds a new root propeerty to the statemape
-     * @param name the key name of the property
+     *
+     * @param name  the key name of the property
      * @param value the value it maps to
      */
     public <T> void put(String name, T value) {

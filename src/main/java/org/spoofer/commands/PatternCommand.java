@@ -30,14 +30,14 @@ public class PatternCommand implements Command {
             throw new IllegalArgumentException("missing or empty pattern block.  Provide a block of commands embraced in [...]");
         }
         // Clean code block from args
-        for (int i=0; i < codeBlock.size() && !args.isEmpty(); i++) {
+        for (int i = 0; i < codeBlock.size() && !args.isEmpty(); i++) {
             args.remove(0);
         }
         // strip off block tokens
         codeBlock.remove(0);
         codeBlock.remove(codeBlock.size() - 1);
 
-        Map<String, Macro> patterns = state.get("runtime.patterns");
+        Map<String, Macro> patterns = state.get("patterns");
         String cmd = String.join(" ", codeBlock);
         patterns.put(name, new SimpleMacro(cmd));
         System.out.printf("pattern '%s' created as '%s'\n", name, cmd);

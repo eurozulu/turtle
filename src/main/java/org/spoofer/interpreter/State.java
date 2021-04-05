@@ -17,4 +17,7 @@ import org.spoofer.model.TurtleState;
  */
 public interface State {
     <T> T get(String name);
+
+    <T> void put(String name, T value);
+
 }

@@ -4,7 +4,6 @@ import org.spoofer.commands.*;
 import org.spoofer.model.TurtleState;
 
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,44 +27,23 @@ public class Interpreter {
         buildMacros();
     }
 
-    // patterns maintains a mapping of user defined, named patterns (functions), mapped to the macro to run.
-    private final Map<String, Macro> patterns = new HashMap<>();
-
-
     /**
-     * gets the mapped patterns of this {@link Interpreter}
+     * Interprets the given process.
      *
-     * @return all the user defined patterns
-     */
-    public Map<String, Macro> getPatterns() {
-        return patterns;
-    }
-
-
-    /**
-     * run the given line of commands and apply the commands to the state.
-     * The given line must be space separated commands and numbers, beginning with a valid command.
-     * Each command must have any required arguments follow it.
-     * Further commands may foloow the last argument of the first command, and will be interpreted in the same fashion as the first command.
-     * Any number of command / argument combintaitons may be concatinated in this manner.
-     * e.g. forward 10 rotate 90 forward 10 rotate -90 forward 20, is interpreted as three commands, each with a single argument.
-     *
-     * @param turtleState the state to apply the command(s) to.
-     * @param commands    the line of command(s) to interpret.
+     * @param process the process to interpret
      * @throws IllegalArgumentException, Exception if commands, argument are invalid
      */
-    public void run(TurtleState turtleState, String commands) throws Exception {
-        State state = createState(turtleState);
+    public void run(Process process) throws Exception {
+        Map<String, Macro> patterns = process.getState().get("patterns");
 
-        for (String line : commands.split("\n")) {
-            if (line.trim().startsWith(COMMENT_TOKEN))
+        for (String line : process.getCommand().split("\\n")) {
+            if (line.trim().length() == 0 || line.trim().startsWith(COMMENT_TOKEN))
                 continue;
 
+            // Split into args and feed in to matching command(s)
             List<String> args = parseArgs(line);
             while (!args.isEmpty()) {
-                Command command = parseCommand(args);
-                LOG.log(Level.FINE, String.format("read '%s' as:\n%s (%s)\n", commands, command.getClass().getSimpleName(), args.toString()));
-                command.execute(state, args);
+                parseCommand(args, patterns).execute(process.getState(), args);
             }
         }
     }
@@ -84,7 +62,7 @@ public class Interpreter {
      *             Argument contents may be altered by this method, removing items for any required token replacements.
      * @return The mapped, directly or indirectly (via patterns and macros), Command for the given arguments.
      */
-    private Command parseCommand(List<String> args) {
+    private Command parseCommand(List<String> args, Map<String, Macro> patterns) {
         String cmd = args.remove(0).toLowerCase();
 
         if (commands.containsKey(cmd)) {
@@ -94,13 +72,13 @@ public class Interpreter {
         if (macros.containsKey(cmd)) {
             List<String> macArgs = parseArgs(macros.get(cmd).Command(args));
             args.addAll(0, macArgs);
-            return parseCommand(args);
+            return parseCommand(args, patterns);
         }
 
         if (patterns.containsKey(cmd)) {
             List<String> patArgs = parseArgs(patterns.get(cmd).Command(args));
             args.addAll(0, patArgs);
-            return parseCommand(args);
+            return parseCommand(args, patterns);
         }
         throw new IllegalArgumentException(String.format("%s is an unknown command", cmd));
     }
@@ -182,14 +160,6 @@ public class Interpreter {
         return closeAt >= 0 ? new ArrayList<>(args.subList(openAt, closeAt + 1)) : Collections.emptyList();
     }
 
-
-    private State createState(TurtleState turtleState) {
-        StateMap stack = new StateMap();
-        stack.put("turtle", turtleState);
-        stack.put("runtime", this);
-        stack.put("env", System.getenv());
-        return stack;
-    }
 
     private static void buildCommands() {
         commands.clear();
