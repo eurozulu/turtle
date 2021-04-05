@@ -1,6 +1,6 @@
 package org.spoofer.model;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,17 +65,18 @@ public class TurtleState {
 
     public void centerTurtle() {
         setConstraint(contraint); // sanity check constraints
+        int x = contraint.width / 2;
+        int y = contraint.height / 2;
 
-        // Ensure pen is up when homeing
-        boolean pen = true; // current state
-        if (!turtlePath.isEmpty()) {
+        TurtlePosition homePos;
+        if (!turtlePath.isEmpty() ) {
             TurtlePosition pos = getTurtlePosition();
-            pen = pos.imprinted;
+            homePos = pos.clone(x, y);
             pos.imprinted = false;
-        }
 
-        turtlePath.add(new TurtlePosition(contraint.width / 2, contraint.height / 2));
-        getTurtlePosition().imprinted = pen;
+        } else
+              homePos = new TurtlePosition(x, y);
+        turtlePath.add(homePos);
     }
 
     public void setConstraint(Dimension size) {
