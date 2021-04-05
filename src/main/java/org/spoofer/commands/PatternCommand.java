@@ -2,6 +2,7 @@ package org.spoofer.commands;
 
 import org.spoofer.interpreter.Interpreter;
 import org.spoofer.interpreter.Macro;
+import org.spoofer.interpreter.SimpleMacro;
 import org.spoofer.interpreter.State;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class PatternCommand implements Command {
 
         Map<String, Macro> patterns = state.get("runtime.patterns");
         String cmd = String.join(" ", codeBlock);
-        patterns.put(name, new Macro(cmd));
+        patterns.put(name, new SimpleMacro(cmd));
         System.out.printf("pattern '%s' created as '%s'\n", name, cmd);
     }
 
