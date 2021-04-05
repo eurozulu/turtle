@@ -1,4 +1,4 @@
-<span style="float: right;" >![alt text](docs/turtle.png "Turtle LOGO")</span>
+<span style="float: right;" >![alt text](./docs/turtle.png "Turtle LOGO")</span>
 # Turtle
 
 ### LOGO Interpreter code challange  
@@ -21,7 +21,7 @@ This will generate the new jar in the `target` directory under the name: `turtle
 
 #### GUI  
 
-![alt text](docs/screenshot.png "Turtle GUI")
+![alt text](./docs/screenshot.png "Turtle GUI")
 
 The Main screen has three panels:    
 
