@@ -1,7 +1,9 @@
-package org.spoofer;
+package org.spoofer.misc;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.CharBuffer;
 
@@ -82,4 +84,18 @@ public class FileTools {
         out.flush();
         out.close();
     }
+
+
+    public static BufferedImage loadImage(String name, ClassLoader cloader) {
+        InputStream inputStream = cloader.getResourceAsStream(String.format("%s.png", name));
+        if (inputStream == null) {
+            throw new IllegalStateException("image not found! " + name);
+        }
+        try {
+            return ImageIO.read(inputStream);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to load image  resource", e);
+        }
+    }
+
 }
