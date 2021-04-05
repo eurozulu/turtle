@@ -1,3 +1,6 @@
+# Example log for repeat command.
+# Click "run all" to draw pattern
+
 pattern square [ repeat 4 [ fd 50 rt 90 ]]
 pattern triangle [ repeat 3 [ fd 50 rt 120 ]]
 pattern rectangle [repeat 2 [ fd 50 rt 90 fd 25 rt 90]]
@@ -7,12 +10,15 @@ pen down
 # turtle off
 
 home
+colour red
 repeat 180 [ square rotate 2 ]
 
 home
+colour blue
 repeat 180 [ triangle rotate 2 ]
 
 home
+colour green
 repeat 180 [ rectangle rotate 2 ]
 
 home
