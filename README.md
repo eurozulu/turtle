@@ -5,8 +5,17 @@ As an experiment in writing an interpreter I picked up a very old code challange
 Initially written with the ancient art of Java swing for the GUI, as per the original challange.  
 Perhaps will convert to more modern framework. (Flutter?)  
 
+### Building
+The application uses maven to build.  
+To generate a new build, from the cloned repository root type:  
+  
+`mvn clean pacakge`  
+  
+This will generate the new jar in the `target` directory under the name: `turtle-1.0-SNAPSHOT-jar-with-dependencies.jar`.  
+
 ### Usage
-`java -jar turtle.jar`
+`java -jar ./target/turtle-1.0-SNAPSHOT-jar-with-dependencies.jar`
+
 
 #### GUI
 The Main screen has three panels:    
