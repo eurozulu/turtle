@@ -1,4 +1,6 @@
+<span style="float: right;" >![alt text](docs/turtle.png "Turtle LOGO")</span>
 # Turtle
+
 ### LOGO Interpreter code challange  
 
 As an experiment in writing an interpreter I picked up a very old code challange from my works archives.  
@@ -17,7 +19,10 @@ This will generate the new jar in the `target` directory under the name: `turtle
 `java -jar ./target/turtle-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
 
-#### GUI
+#### GUI  
+
+![alt text](docs/screenshot.png "Turtle GUI")
+
 The Main screen has three panels:    
 
 - Draw Panel  
