@@ -14,19 +14,17 @@ public class MainMenu extends JMenuBar {
     public static final String MENU_FILE_SAVE = "file_save";
     public static final String MENU_FILE_EXPORT = "file_export";
     public static final String MENU_FILE_EXIT = "file_exit";
-    public static final String MENU_VIEW_STATUS_BAR = "view_status_bar";
-    public static final String MENU_VIEW_COMMAND = "view_command";
-    public static final String MENU_VIEW_CONSOLE = "view_console";
     public static final String MENU_VIEW_TURTLE = "view_turtle";
     public static final String MENU_COMMAND_RUN = "command_run";
     public static final String MENU_COMMAND_RUN_ALL = "command_runall";
 
-    private static final String BUTTON_COMMAND_FORWARD = "forward 10";
-    private static final String BUTTON_COMMAND_LEFT = "left 90";
-    private static final String BUTTON_COMMAND_RIGHT = "right 90";
-    private static final String BUTTON_COMMAND_PEN = "pen %s";
-    private static final String BUTTON_COMMAND_CLEAN = "clean";
-    private static final String BUTTON_COMMAND_HOME = "home";
+    public static final String BUTTON_COMMAND_FORWARD = "forward 10";
+    public static final String BUTTON_COMMAND_BACK = "back 10";
+    public static final String BUTTON_COMMAND_LEFT = "left 90";
+    public static final String BUTTON_COMMAND_RIGHT = "right 90";
+    public static final String BUTTON_COMMAND_PEN = "pen %s";
+    public static final String BUTTON_COMMAND_CLEAN = "clean";
+    public static final String BUTTON_COMMAND_HOME = "home";
 
     // Menus with active state
     private final JMenuItem fileSave = new JMenuItem("Save");
@@ -108,21 +106,6 @@ public class MainMenu extends JMenuBar {
         JMenu menuView = new JMenu("View");
         menuView.setMnemonic(KeyEvent.VK_V);
 
-        JCheckBoxMenuItem viewStatus = new JCheckBoxMenuItem("Status Bar");
-        viewStatus.setActionCommand(MENU_VIEW_STATUS_BAR);
-        viewStatus.addActionListener(menuListener);
-        menuView.add(viewStatus);
-
-        final JCheckBoxMenuItem viewCommand = new JCheckBoxMenuItem("Command Window");
-        viewCommand.setActionCommand(MENU_VIEW_COMMAND);
-        viewCommand.addActionListener(menuListener);
-        menuView.add(viewCommand);
-
-        final JCheckBoxMenuItem viewLog = new JCheckBoxMenuItem("Console");
-        viewLog.setActionCommand(MENU_VIEW_CONSOLE);
-        viewLog.addActionListener(menuListener);
-        menuView.add(viewLog);
-
         menuView.addSeparator();
         viewTurtle.setActionCommand(MENU_VIEW_TURTLE);
         viewTurtle.addActionListener(menuListener);
@@ -140,13 +123,21 @@ public class MainMenu extends JMenuBar {
         btnForward.setActionCommand(BUTTON_COMMAND_FORWARD);
         btnForward.addActionListener(runListener);
 
+        JButton btnBack = new JButton("Back");
+        btnBack.setActionCommand(BUTTON_COMMAND_BACK);
+        btnBack.addActionListener(runListener);
+
         JButton btnRight = new JButton("Right");
         btnRight.setActionCommand(BUTTON_COMMAND_RIGHT);
         btnRight.addActionListener(runListener);
 
         JPanel buttonsNav = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        JPanel fwBkPanel = new JPanel(new BorderLayout());
+        fwBkPanel.add(btnForward, BorderLayout.NORTH);
+        fwBkPanel.add(btnBack, BorderLayout.SOUTH);
+
         buttonsNav.add(btnLeft);
-        buttonsNav.add(btnForward);
+        buttonsNav.add(fwBkPanel);
         buttonsNav.add(btnRight);
 
         penState.addActionListener(new ActionListener() {
