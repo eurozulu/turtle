@@ -16,10 +16,5 @@ import org.spoofer.model.TurtleState;
  * "ENV"        The system Environment variables.
  */
 public interface State {
-
-    String TOKEN_START = "${";
-    String TOKEN_END = "}";
-
     <T> T get(String name);
-    boolean contains(String name);
 }

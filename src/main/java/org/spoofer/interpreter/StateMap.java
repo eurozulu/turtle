@@ -29,22 +29,6 @@ public class StateMap implements State {
         return readValue(keys, values);
     }
 
-    @Override
-    public boolean contains(String name) {
-        return values.containsKey(cleanToken(name));
-    }
-
-    public static String cleanToken(String token) {
-        String s = token.trim();
-        if (s.startsWith(TOKEN_START)) {
-            s = s.substring(TOKEN_START.length());
-        }
-        if (s.endsWith(TOKEN_END)) {
-            s = s.substring(0, s.length() - TOKEN_END.length());
-        }
-        return s;
-    }
-
     private <T extends Object> T readValue(List<String> keys, Object parent) throws IllegalArgumentException {
         if (keys.isEmpty())
             return null;
