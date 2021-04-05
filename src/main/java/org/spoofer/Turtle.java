@@ -3,12 +3,12 @@ package org.spoofer;
 import org.spoofer.gui.MainMenu;
 import org.spoofer.gui.MainPanel;
 import org.spoofer.interpreter.Interpreter;
+import org.spoofer.misc.FileTools;
 import org.spoofer.model.TurtleState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,10 +27,12 @@ public class Turtle {
     private MainPanel mainPanel;
     private MainMenu mainMenu;
 
-    public void start() {
-        Logger.getGlobal().setLevel(Level.WARNING);
+    private boolean debug = false;
 
+
+    public void start() {
         mainPanel = new MainPanel(turtleState, runCommandListener);
+
         mainMenu = new MainMenu(menuListener, runCommandListener);
 
         rootWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,11 +40,37 @@ public class Turtle {
 
         rootWindow.setJMenuBar(mainMenu);
         rootWindow.getContentPane().add(mainPanel, BorderLayout.CENTER);
+        registerKeyEvents(rootWindow.getRootPane());
+
         rootWindow.pack();
         rootWindow.setVisible(true);
         refreshGui();
     }
 
+    /**
+     * register to listen for arrow key events
+     * @param rootPane root pane to receive events
+     */
+    private void registerKeyEvents(JRootPane rootPane) {
+        InputMap inputMap = rootPane.getInputMap();
+        ActionMap actionMap = rootPane.getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), MainMenu.BUTTON_COMMAND_FORWARD);
+        actionMap.put(MainMenu.BUTTON_COMMAND_FORWARD, new KeyActionCommand(MainMenu.BUTTON_COMMAND_FORWARD));
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), MainMenu.BUTTON_COMMAND_BACK);
+        actionMap.put(MainMenu.BUTTON_COMMAND_BACK, new KeyActionCommand(MainMenu.BUTTON_COMMAND_BACK));
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), MainMenu.BUTTON_COMMAND_LEFT);
+        actionMap.put(MainMenu.BUTTON_COMMAND_LEFT, new KeyActionCommand(MainMenu.BUTTON_COMMAND_LEFT));
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), MainMenu.BUTTON_COMMAND_RIGHT);
+        actionMap.put(MainMenu.BUTTON_COMMAND_RIGHT, new KeyActionCommand(MainMenu.BUTTON_COMMAND_RIGHT));
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0), MainMenu.BUTTON_COMMAND_HOME);
+        actionMap.put(MainMenu.BUTTON_COMMAND_HOME, new KeyActionCommand(MainMenu.BUTTON_COMMAND_HOME));
+
+    }
 
     private void refreshGui() {
         mainPanel.updateState(turtleState);
@@ -61,7 +89,10 @@ public class Turtle {
                     mainPanel.appendCommandText(cmd + "\n");
 
             } catch (Exception err) {
-                err.printStackTrace();
+                if (debug)
+                    err.printStackTrace();
+                else
+                    System.err.println(err.getMessage());
             }
             refreshGui();
         }
@@ -92,7 +123,7 @@ public class Turtle {
                     return;
                 }
                 String path = FileTools.requestSaveFilePath();
-                if (path == "")
+                if (path.equals(""))
                     return;
                 try {
                     FileTools.saveFile(path, data);
@@ -110,7 +141,7 @@ public class Turtle {
                             JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                String format = ((JMenuItem)e.getSource()).getName();
+                String format = ((JMenuItem) e.getSource()).getName();
                 String path = FileTools.requestSaveFilePath();
                 try {
                     mainPanel.exportPath(path, format);
@@ -121,7 +152,7 @@ public class Turtle {
             break;
 
             case MainMenu.MENU_VIEW_TURTLE:
-                turtleState.isTurtleVisible = ((JCheckBoxMenuItem)e.getSource()).isSelected();
+                turtleState.isTurtleVisible = ((JCheckBoxMenuItem) e.getSource()).isSelected();
                 rootWindow.repaint();
                 break;
 
@@ -133,5 +164,19 @@ public class Turtle {
     };
 
 
+    private class KeyActionCommand extends AbstractAction {
+        public KeyActionCommand(String name) {
+            super(name);
+        }
+        public KeyActionCommand(String name, String command) {
+            super(name);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = this.getValue(Action.NAME).toString();
+            runCommandListener.actionPerformed(new ActionEvent(e.getSource(), e.getID(),  name));
+        }
+    }
 
 }
