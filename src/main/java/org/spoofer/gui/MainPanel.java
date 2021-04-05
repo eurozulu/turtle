@@ -144,7 +144,7 @@ public class MainPanel extends JPanel {
     private void captureOutputStreams() {
         StreamMultiplex out = new StreamMultiplex(new OutputStream[]{
                 System.out,
-                new CapturedOutputStream(Color.white)
+                new CapturedOutputStream(Color.black)
         });
         System.setOut(new PrintStream(out));
 
