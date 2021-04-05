@@ -9,7 +9,7 @@ Perhaps will convert to more modern framework. (Flutter?)
 The application uses maven to build.  
 To generate a new build, from the cloned repository root type:  
   
-`mvn clean pacakge`  
+`mvn clean package`  
   
 This will generate the new jar in the `target` directory under the name: `turtle-1.0-SNAPSHOT-jar-with-dependencies.jar`.  
 
