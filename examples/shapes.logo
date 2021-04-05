@@ -1,3 +1,4 @@
+# Example shapes.  Click 'Run all' to draw the example.
 # Patterns defined as basic shape name:
 pattern square [ repeat 4 [ rt 90 fd {} ]]
 pattern triangle [ repeat 3 [ lt 120 fd {} ]]
@@ -13,15 +14,23 @@ pattern move_bottom_right [ hm pu rt 90 fd 90 rt 90 fd 90 rotate 180 pd ]
 cleanscreen
 
 move_top_left 
+colour red
 square 40
+square 39
 
 move_top_right
+colour green
 triangle 40
+triangle 39
 
 move_bottom_right
+colour blue
 rectangle 40
+rectangle 39
 
 move_bottom_left
+colour cyan
 octagon 20
-
+octagon 19
 home
+

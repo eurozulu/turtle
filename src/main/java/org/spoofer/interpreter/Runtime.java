@@ -14,7 +14,7 @@ public class Runtime {
     private final BlockingDeque<Process> commandQueue = new LinkedBlockingDeque<>();
     private final AtomicBoolean running = new AtomicBoolean(true);
 
-    public boolean debug = true;
+    public boolean debug = false;
 
     public Runtime() {
         start();
