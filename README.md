@@ -58,13 +58,13 @@ The Language consists of simple commands which use one or more parameters.
 e.g. `forward 10`  
 This will move the turtle forward 10 'units'.  
   
-Commands may be followed by additional command using a space to seperate them.  
+Commands may be followed by additional commands using a space to seperate them.  
 e.g. `forward 10 right 90 forward 20`  
 This produces three commands, Forward, right and forward.  Any number of commands may be strung together like this.  
   
 Basic Turtle commands:  
 
-| Command | sbbreviations | Argument(s) | Description | Example |
+| Command | Abbreviations | Argument(s) | Description | Example |
 | --------|---------------|-------------|------------ | ------- |
 | `forward` | `fd`  | Single number of units to move | Moves forward at the current angle of rotation | `fd 25` |
 | `back`  | `bk` | Single number of units to move | Moves backwards at the current angle of rotation | `bk 25` |
@@ -77,7 +77,7 @@ To ensur ethe pen is on use the `pen down` commands.  The path can be cleared us
 Additional control commands:  
 
 
-| Command | sbbreviations | Argument(s) | Description | Example |
+| Command | Abbreviations | Argument(s) | Description | Example |
 | --------|---------------|-------------|------------ | ------- |
 | `pen` | `pu, pd, draw`  | Single argument of "yes/no" or up/down or true false | Controls the pen state.  When pen is down the path is drawn. | `pen down` |
 | `hideturtle`  | `ht` | none | Hides the turtle, leaving just the path on screen | `hideturtle` |
@@ -117,8 +117,37 @@ e.g. `pattern square [ repeat 4 [  fd {} lt 90 ]]`
 The forward command will use the argument following `square` to define the forward distance.  
 `square 40` or `square 3` draws squares of different sizes.  
 Arguments are placed in each placehold in the order they appear.
+  
+Instruction commands:  
+
+| Command | Abbreviations | Argument(s) | Description | Example |
+| --------|---------------|-------------|------------ | ------- |
+| `repeat` | `rt` | Single number of repeat count followed by a 'code block' of commands to repeat. | Repeats the given code block, by the given number of times. | `rp 6 [ fd 30 lt 60 ]`<br />Draws a hexagon |
+| `pattern` | `pt` | A unique name for the pattern followed by a 'code block' of commands | Assigns the given name to the given commands.<br />When the name is used as a command, the given commands are executed. | `pt triange [ fd 30 rt 120 fd 30 rt 120 fd 30 ]` <br />Creates the `triangle` command, which draws a triangle.|
+  
 
 ----  
 
 #### Files
 The command window can be saved using the file menu or replaced with a file loaded via the open menu.
+
+
+#### All Commands
+
+| Command | Abbreviations | Argument(s) | Description | Example |
+| --------|---------------|-------------|------------ | ------- |
+| `forward` | `fd`  | Single number of units to move | Moves forward at the current angle of rotation | `fd 25` |
+| `back`  | `bk` | Single number of units to move | Moves backwards at the current angle of rotation | `bk 25` |
+| `left`  | `lt` | Single number of the angle to rotate | Rotates the turtle by the number of degrees | `lt 90` |
+| `right`  | `rt` | Single number of the angle to rotate | Rotates the turtle by the number of degrees | `rt 90` |
+| `rotate`  | - | Single number of the angle to rotate.<br />May be positive or negative number.  | Rotates the turtle by the number of degrees | `rotate 90` |
+| `pen` | `pu, pd, draw`  | Single argument of "yes/no" or up/down or true false | Controls the pen state.  When pen is down the path is drawn. | `pen down` |
+| `hideturtle`  | `ht` | none | Hides the turtle, leaving just the path on screen | `hideturtle` |
+| `showturtle`  | `st` | none | Shows the turtle, showing the path and turtle on screen | `showturtle` |
+| `home`  | `hm` | none | Moves the turtle to the center of the screen without leaving a path.  Current path is unchanged. | `home` |
+| `clean`  | `cn` | none | Clears the current path, leaving turtle in position | `clean` |
+| `cleanscreen`  | `cs` | none | Clears the current path, returns turtle to home. | `cleanscreen` |
+| `repeat` | `rt` | Single number of repeat count followed by a 'code block' of commands to repeat. | Repeats the given code block, by the given number of times. | `rp 6 [ fd 30 lt 60 ]`<br />Draws a hexagon |
+| `pattern` | `pt` | A unique name for the pattern followed by a 'code block' of commands | Assigns the given name to the given commands.<br />When the name is used as a command, the given commands are executed. | `pt triange [ fd 30 rt 120 fd 30 rt 120 fd 30 ]` <br />Creates the `triangle` command, which draws a triangle.|
+| `undo` | `ud` | none | Undo the previous command, removing the last entry in the turtle path. | `undo` |
+| `dump` | none | none | Dumps the current state to the console. Shows Turle state & path and current pattern definitions. | `dump` |
