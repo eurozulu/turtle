@@ -17,10 +17,10 @@ public class ForwardCommand implements Command {
         int distance = Command.parseArgInt(args.remove(0));
         TurtlePosition position = state.get("turtle.turtlePosition");
 
-        // Claculate new turtle position based on current rotation and position
+        // Calculate new turtle position based on current rotation and position
         double radAngle = Math.toRadians(position.rotation);
-        long x = Math.round(position.x + (double)distance * Math.cos(radAngle));
-        long y = Math.round(position.y + (double)distance * Math.sin(radAngle));
+        long x = Math.round(position.x + (double)distance * Math.sin(radAngle));
+        long y = Math.round(position.y + (double)-distance * Math.cos(radAngle));
         if (x > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("invalid forward value, too large");
         }

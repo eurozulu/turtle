@@ -22,7 +22,6 @@ public class MainPanel extends JPanel {
     private final StatusBar statusBar = new StatusBar();
     private final TurtlePanel turtlePanel;
 
-
     public MainPanel(TurtleState turtleState, ActionListener runListener) {
         super(new BorderLayout());
         turtlePanel = new TurtlePanel(turtleState);
@@ -45,6 +44,7 @@ public class MainPanel extends JPanel {
     public void exportPath(String path, String format) throws IOException {
         turtlePanel.exportPath(path, format);
     }
+
 
     public void updateState(TurtleState turtleState) {
         statusBar.update(turtleState);
@@ -69,7 +69,6 @@ public class MainPanel extends JPanel {
     }
 
     private void buildMainPanel(ActionListener runListener) {
-
         commands.setColumns(50);
         commands.setEditable(true);
 
@@ -84,11 +83,10 @@ public class MainPanel extends JPanel {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_ENTER:
-                        String line = getLastLine().trim();
-                        if (line.length() > 0)
-                            runListener.actionPerformed(new ActionEvent(commands, -1, line));
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String line = getLastLine().trim();
+                    if (line.length() > 0)
+                        runListener.actionPerformed(new ActionEvent(commands, -1, line));
                 }
             }
         });
@@ -96,12 +94,7 @@ public class MainPanel extends JPanel {
         JPopupMenu commandPopup = new JPopupMenu("Command");
         commands.add(commandPopup);
         JMenuItem clearCmdMenu = new JMenuItem("Clear");
-        clearCmdMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                commands.setText("");
-            }
-        });
+        clearCmdMenu.addActionListener(e -> commands.setText(""));
         commandPopup.add(clearCmdMenu);
         commands.addMouseListener(new MouseAdapter() {
             @Override
@@ -114,7 +107,6 @@ public class MainPanel extends JPanel {
         });
 
 
-
         console.setPreferredSize(new Dimension(200, 200));
         console.setEditable(false);
         console.setBackground(Color.LIGHT_GRAY);
@@ -122,12 +114,7 @@ public class MainPanel extends JPanel {
         JPopupMenu consolePopup = new JPopupMenu("Console");
         console.add(consolePopup);
         JMenuItem clearMenu = new JMenuItem("Clear");
-        clearMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                console.setText("");
-            }
-        });
+        clearMenu.addActionListener(e -> console.setText(""));
         consolePopup.add(clearMenu);
         console.addMouseListener(new MouseAdapter() {
             @Override

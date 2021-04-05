@@ -8,10 +8,10 @@ import org.spoofer.model.TurtleState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Turtle {
 
@@ -69,7 +69,6 @@ public class Turtle {
 
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0), MainMenu.BUTTON_COMMAND_HOME);
         actionMap.put(MainMenu.BUTTON_COMMAND_HOME, new KeyActionCommand(MainMenu.BUTTON_COMMAND_HOME));
-
     }
 
     private void refreshGui() {
