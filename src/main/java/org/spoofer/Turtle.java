@@ -7,6 +7,7 @@ import org.spoofer.interpreter.Runtime;
 import org.spoofer.interpreter.State;
 import org.spoofer.interpreter.StateMap;
 import org.spoofer.misc.FileTools;
+import org.spoofer.model.TurtlePosition;
 import org.spoofer.model.TurtleState;
 
 import javax.swing.*;
@@ -157,6 +158,16 @@ public class Turtle {
             case MainMenu.MENU_VIEW_TURTLE:
                 turtleState.isTurtleVisible = ((JCheckBoxMenuItem) e.getSource()).isSelected();
                 rootWindow.repaint();
+                break;
+
+            case MainMenu.MENU_DRAW_PAINT:
+                TurtlePosition position = turtleState.getTurtlePosition();
+                Color newColor = JColorChooser.showDialog(rootWindow, "Choose a color", position.paintColour);
+                if (newColor != null) {
+                    position.paintColour = newColor;
+                    mainPanel.appendCommandText(String.format("colour #%s\n", Integer.toHexString(newColor.getRGB() & 0xFFFFFF)));
+                }
+                refreshGui();
                 break;
 
             case MainMenu.MENU_COMMAND_RUN_ALL:

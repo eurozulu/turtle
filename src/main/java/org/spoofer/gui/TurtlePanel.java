@@ -18,8 +18,6 @@ import java.io.InputStream;
  */
 public class TurtlePanel extends JPanel {
 
-    private static final Color PATH_COLOUR = Color.BLUE;
-
     private final TurtleState turtleState;
 
     private final BufferedImage turtleIcon;
@@ -58,12 +56,12 @@ public class TurtlePanel extends JPanel {
     }
 
     private void paintPath(Graphics g) {
-        g.setColor(PATH_COLOUR);
-
         Rectangle bounds = g.getClipBounds();
         TurtlePosition prev = null;
+
         for (TurtlePosition pos : turtleState.getTurtlePath()) {
             if (prev != null && prev.imprinted) {
+                g.setColor(prev.paintColour);
                 Point tPos = getTurtlePoint(pos.x, pos.y, bounds);
                 Point tPosPrev = getTurtlePoint(prev.x, prev.y, bounds);
                 g.drawLine(tPosPrev.x, tPosPrev.y, tPos.x, tPos.y);

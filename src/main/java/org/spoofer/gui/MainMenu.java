@@ -15,6 +15,7 @@ public class MainMenu extends JMenuBar {
     public static final String MENU_FILE_EXPORT = "file_export";
     public static final String MENU_FILE_EXIT = "file_exit";
     public static final String MENU_VIEW_TURTLE = "view_turtle";
+    public static final String MENU_DRAW_PAINT = "draw_colour";
     public static final String MENU_COMMAND_RUN = "command_run";
     public static final String MENU_COMMAND_RUN_ALL = "command_runall";
 
@@ -140,12 +141,7 @@ public class MainMenu extends JMenuBar {
         buttonsNav.add(fwBkPanel);
         buttonsNav.add(btnRight);
 
-        penState.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                runListener.actionPerformed(new ActionEvent(penState, 2, String.format(BUTTON_COMMAND_PEN, penState.isSelected())));
-            }
-        });
+        penState.addActionListener(e -> runListener.actionPerformed(new ActionEvent(penState, 2, String.format(BUTTON_COMMAND_PEN, penState.isSelected()))));
         JPanel buttonsDraw = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         btnClean.addActionListener(e -> {
@@ -155,7 +151,16 @@ public class MainMenu extends JMenuBar {
         btnHome.addActionListener(e -> {
             runListener.actionPerformed(new ActionEvent(btnClean, 2, BUTTON_COMMAND_HOME));
         });
-        buttonsDraw.add(penState);
+
+        JButton btnColour = new JButton("Paint");
+        btnColour.addActionListener(e -> {
+            menuListener.actionPerformed(new ActionEvent(btnClean, 2, MENU_DRAW_PAINT));
+        });
+        JPanel penPanel = new JPanel(new BorderLayout());
+        penPanel.add(penState, BorderLayout.NORTH);
+        penPanel.add(btnColour, BorderLayout.SOUTH);
+
+        buttonsDraw.add(penPanel);
         buttonsDraw.add(btnClean);
         buttonsDraw.add(btnHome);
 

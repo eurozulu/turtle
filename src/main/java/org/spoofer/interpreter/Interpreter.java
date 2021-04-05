@@ -166,6 +166,7 @@ public class Interpreter {
         commands.put("forward", new ForwardCommand());
         commands.put("rotate", new RotateCommand());
         commands.put("pen", new PenCommand());
+        commands.put("colour", new ColourCommand());
         commands.put("repeat", new RepeatCommand());
         commands.put("pattern", new PatternCommand());
         commands.put("home", new HomeCommand());
@@ -207,6 +208,10 @@ public class Interpreter {
         macros.put("pu", new SimpleMacro("pen off"));
         macros.put("pd", new SimpleMacro("pen on"));
         macros.put("draw", new SimpleMacro("pen on"));
+
+        macros.put("color", new SimpleMacro("colour"));
+        macros.put("col", new SimpleMacro("colour"));
+        macros.put("paint", new SimpleMacro("colour"));
 
         macros.put("rp", new SimpleMacro("repeat"));
         macros.put("pt", new SimpleMacro("pattern"));

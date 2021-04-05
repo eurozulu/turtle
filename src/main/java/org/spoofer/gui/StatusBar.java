@@ -11,6 +11,7 @@ public class StatusBar extends JPanel {
     private final JTextField statusPosition = new JTextField();
     private final JTextField statusRotation = new JTextField();
     private final JTextField statusPen = new JTextField();
+    private final JPanel statusColour = new JPanel();
     private final JTextField statusConstraint = new JTextField();
 
     public StatusBar() {
@@ -25,6 +26,7 @@ public class StatusBar extends JPanel {
         statusPosition.setText(String.format("x: %d\ty: %d", position.x, position.y));
         statusRotation.setText(String.format("%3d", Math.round(position.rotation)));
         statusPen.setText(position.imprinted ? "On" : "Off");
+        statusColour.setBackground(position.paintColour);
     }
 
     private void buildStatusBar() {
@@ -47,6 +49,10 @@ public class StatusBar extends JPanel {
         statusPen.setColumns(4);
         this.add(new JLabel("Pen: "));
         this.add(statusPen);
+
+        statusColour.setPreferredSize(new Dimension(10,10));
+        this.add(new JLabel("Colour: "));
+        this.add(statusColour);
     }
 
 

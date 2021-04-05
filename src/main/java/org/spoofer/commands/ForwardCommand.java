@@ -28,6 +28,6 @@ public class ForwardCommand implements Command {
             throw new IllegalArgumentException("invalid forward value, too large");
         }
         TurtleState turtle = state.get("turtle");
-        turtle.moveTurtle(position.moved((int)x, (int)y));
+        turtle.moveTurtle(position.clone((int)x, (int)y));
     }
 }
