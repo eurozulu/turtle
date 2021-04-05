@@ -37,7 +37,9 @@ public class PatternCommand implements Command {
         codeBlock.remove(codeBlock.size() - 1);
 
         Map<String, Macro> patterns = state.get("runtime.patterns");
-        patterns.put(name, new Macro(String.join(" ", codeBlock)));
+        String cmd = String.join(" ", codeBlock);
+        patterns.put(name, new Macro(cmd));
+        System.out.printf("pattern '%s' created as '%s'\n", name, cmd);
     }
 
 }
