@@ -26,12 +26,8 @@ public class MainPanel extends JPanel {
     public MainPanel(TurtleState turtleState, ActionListener runListener) {
         super(new BorderLayout());
         turtlePanel = new TurtlePanel(turtleState);
-
         captureOutputStreams();
-
         buildMainPanel(runListener);
-
-        statusBar.update(turtleState);
     }
 
     public void setCommandText(String s) {

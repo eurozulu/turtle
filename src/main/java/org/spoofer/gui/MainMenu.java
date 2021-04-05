@@ -1,12 +1,12 @@
 package org.spoofer.gui;
 
+import org.spoofer.model.TurtleState;
+
 import javax.swing.*;
-import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.concurrent.Flow;
 
 public class MainMenu extends JMenuBar {
 
@@ -25,11 +25,28 @@ public class MainMenu extends JMenuBar {
     private static final String BUTTON_COMMAND_LEFT = "left 90";
     private static final String BUTTON_COMMAND_RIGHT = "right 90";
     private static final String BUTTON_COMMAND_PEN = "pen %s";
+    private static final String BUTTON_COMMAND_CLEAN = "clean";
+    private static final String BUTTON_COMMAND_HOME = "home";
+
+    // Menus with active state
+    private final JMenuItem fileSave = new JMenuItem("Save");
+    private final JMenu fileExport = new JMenu("Export");
+    private final JCheckBoxMenuItem viewTurtle = new JCheckBoxMenuItem("Turtle");
+    private final JCheckBoxMenuItem penState = new JCheckBoxMenuItem("Draw");
+    private final JButton btnClean = new JButton("Clean");
 
     public MainMenu(ActionListener menuListener, ActionListener runListener) {
         this.add(buildFileMenu(menuListener));
         this.add(buildViewMenu(menuListener));
         buildButtonBar(menuListener, runListener);
+    }
+
+    public void updateMenu(TurtleState turtleState, boolean hasCommands) {
+        fileSave.setEnabled(hasCommands);
+        fileExport.setEnabled(hasCommands);
+        viewTurtle.setSelected(turtleState.isTurtleVisible);
+        penState.setSelected(turtleState.getTurtlePosition().imprinted);
+        btnClean.setEnabled(!turtleState.IsEmpty());
     }
 
     private JMenu buildFileMenu(ActionListener menuListener) {
@@ -42,17 +59,14 @@ public class MainMenu extends JMenuBar {
         fileOpen.addActionListener(menuListener);
         fileMenu.add(fileOpen);
 
-        JMenuItem fileSave = new JMenuItem("Save");
         fileSave.setMnemonic(KeyEvent.VK_S);
         fileSave.setActionCommand(MENU_FILE_SAVE);
         fileSave.addActionListener(menuListener);
         fileMenu.add(fileSave);
 
         fileMenu.addSeparator();
-        
-        JMenu fileExport = new JMenu("Export");
-        fileExport.setMnemonic(KeyEvent.VK_X);
 
+        fileExport.setMnemonic(KeyEvent.VK_X);
         JMenuItem exportPng = new JMenuItem("PNG");
         exportPng.setActionCommand(MENU_FILE_EXPORT);
         exportPng.setName("png");
@@ -79,9 +93,8 @@ public class MainMenu extends JMenuBar {
 
         fileMenu.add(fileExport);
 
-
         fileMenu.addSeparator();
-        
+
         JMenuItem fileExit = new JMenuItem("Exit");
         fileExit.setMnemonic(KeyEvent.VK_E);
         fileExit.setActionCommand(MENU_FILE_EXIT);
@@ -111,10 +124,9 @@ public class MainMenu extends JMenuBar {
         menuView.add(viewLog);
 
         menuView.addSeparator();
-        final JCheckBoxMenuItem viewTutrle = new JCheckBoxMenuItem("Turtle");
-        viewTutrle.setActionCommand(MENU_VIEW_TURTLE);
-        viewTutrle.addActionListener(menuListener);
-        menuView.add(viewTutrle);
+        viewTurtle.setActionCommand(MENU_VIEW_TURTLE);
+        viewTurtle.addActionListener(menuListener);
+        menuView.add(viewTurtle);
 
         return menuView;
     }
@@ -137,16 +149,24 @@ public class MainMenu extends JMenuBar {
         buttonsNav.add(btnForward);
         buttonsNav.add(btnRight);
 
-
-        JCheckBoxMenuItem penCheck = new JCheckBoxMenuItem("Draw");
-        penCheck.addActionListener(new ActionListener() {
+        penState.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                runListener.actionPerformed(new ActionEvent(penCheck, 2, String.format(BUTTON_COMMAND_PEN, penCheck.isSelected())));
+                runListener.actionPerformed(new ActionEvent(penState, 2, String.format(BUTTON_COMMAND_PEN, penState.isSelected())));
             }
         });
         JPanel buttonsDraw = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        buttonsDraw.add(penCheck);
+
+        btnClean.addActionListener(e -> {
+            runListener.actionPerformed(new ActionEvent(btnClean, 2, BUTTON_COMMAND_CLEAN));
+        });
+        JButton btnHome = new JButton("Home");
+        btnHome.addActionListener(e -> {
+            runListener.actionPerformed(new ActionEvent(btnClean, 2, BUTTON_COMMAND_HOME));
+        });
+        buttonsDraw.add(penState);
+        buttonsDraw.add(btnClean);
+        buttonsDraw.add(btnHome);
 
 
         JButton btnRunAll = new JButton("Run All");

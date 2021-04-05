@@ -28,6 +28,6 @@ public class TurtleVisibleCommand implements Command {
         }
 
         TurtleState turtle = state.get("turtle");
-        turtle.isVisible = visible;
+        turtle.isTurtleVisible = visible;
     }
 }

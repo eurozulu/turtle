@@ -18,7 +18,7 @@ public class TurtleState {
     private final List<TurtlePosition> turtlePath = new ArrayList<>();
 
     // If turtle should be drawn on screen (Has no effect on Turtle state)
-    public boolean isVisible = true;
+    public boolean isTurtleVisible = true;
 
     public TurtleState() {
         centerTurtle();
@@ -29,7 +29,18 @@ public class TurtleState {
      * @return the current state
      */
     public TurtlePosition getTurtlePosition() {
+        if (turtlePath.isEmpty()) {
+            centerTurtle();
+        }
         return turtlePath.get(turtlePath.size() - 1);
+    }
+
+    /**
+     * Checks if the turtle path is empty.  Path must have two or more positions to be not empty.
+     * @return true if the path has at least two positions (forming a single line), false otherwise.
+     */
+    public boolean IsEmpty() {
+        return turtlePath.size() < 2;
     }
 
     /**
@@ -54,7 +65,17 @@ public class TurtleState {
 
     public void centerTurtle() {
         setConstraint(contraint); // sanity check constraints
+
+        // Ensure pen is up when homeing
+        boolean pen = true; // current state
+        if (!turtlePath.isEmpty()) {
+            TurtlePosition pos = getTurtlePosition();
+            pen = pos.imprinted;
+            pos.imprinted = false;
+        }
+
         turtlePath.add(new TurtlePosition(contraint.width / 2, contraint.height / 2));
+        getTurtlePosition().imprinted = pen;
     }
 
     public void setConstraint(Dimension size) {

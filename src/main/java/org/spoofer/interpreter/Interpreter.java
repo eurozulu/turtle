@@ -56,7 +56,6 @@ public class Interpreter {
         List<String> args = parseArgs(line);
 
         State state = createState(turtleState);
-        LOG.log(Level.INFO, String.format("interpreting '%s' as:\n", line));
         while (!args.isEmpty()) {
             Command command = parseCommand(args);
             LOG.log(Level.INFO, String.format("\t'%s (%s)'\n", command.getClass().getSimpleName(), args.toString()));
@@ -172,13 +171,13 @@ public class Interpreter {
     private static void buildCommands() {
         commands.clear();
         commands.put("forward", new ForwardCommand());
-        commands.put("home", new HomeCommand());
-        commands.put("clean", new CleanCommand());
         commands.put("rotate", new RotateCommand());
         commands.put("pen", new PenCommand());
-        commands.put("turtle", new TurtleVisibleCommand());
         commands.put("repeat", new RepeatCommand());
         commands.put("pattern", new PatternCommand());
+        commands.put("home", new HomeCommand());
+        commands.put("clean", new CleanCommand());
+        commands.put("turtle", new TurtleVisibleCommand());
         commands.put("undo", new UndoCommand());
         commands.put("dump", new DumpCommand());
     }
@@ -214,6 +213,10 @@ public class Interpreter {
         macros.put("pu", new Macro("pen off"));
         macros.put("pd", new Macro("pen on"));
         macros.put("draw", new Macro("pen on"));
+
+        macros.put("rp", new Macro("repeat"));
+        macros.put("pt", new Macro("pattern"));
+        macros.put("ud", new Macro("undo"));
     }
 
 

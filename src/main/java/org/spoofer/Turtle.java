@@ -6,11 +6,9 @@ import org.spoofer.interpreter.Interpreter;
 import org.spoofer.model.TurtleState;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,8 +40,15 @@ public class Turtle {
         rootWindow.getContentPane().add(mainPanel, BorderLayout.CENTER);
         rootWindow.pack();
         rootWindow.setVisible(true);
+        refreshGui();
     }
 
+
+    private void refreshGui() {
+        mainPanel.updateState(turtleState);
+        mainMenu.updateMenu(turtleState, mainPanel.getCommandText().trim().length() > 0);
+        rootWindow.repaint();
+    }
 
     private ActionListener runCommandListener = new ActionListener() {
         @Override
@@ -51,14 +56,14 @@ public class Turtle {
             try {
                 String cmd = e.getActionCommand();
                 interpreter.run(turtleState, cmd);
+                // negative ID's are NOT added to command window. (Such as commands from the window itself)
                 if (e.getID() >= 0)
                     mainPanel.appendCommandText(cmd + "\n");
 
             } catch (Exception err) {
                 err.printStackTrace();
             }
-            mainPanel.updateState(turtleState);
-            rootWindow.repaint();
+            refreshGui();
         }
     };
 
@@ -116,7 +121,7 @@ public class Turtle {
             break;
 
             case MainMenu.MENU_VIEW_TURTLE:
-                turtleState.isVisible = ((JCheckBoxMenuItem)e.getSource()).isSelected();
+                turtleState.isTurtleVisible = ((JCheckBoxMenuItem)e.getSource()).isSelected();
                 rootWindow.repaint();
                 break;
 
