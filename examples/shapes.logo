@@ -1,0 +1,4 @@
+pattern square [ repeat 4 [ fd {} rt 90 ]]
+pattern triangle [ repeat 3 [ fd {} rt 120 ]]
+pattern rectangle [repeat 2 [ fd {} rt 90 fd {} rt 90]]
+pattern octagon [repeat 6 [ fd {} rt 60 ] ]
