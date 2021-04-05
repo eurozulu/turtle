@@ -31,25 +31,30 @@ public class StatusBar extends JPanel {
 
     private void buildStatusBar() {
         statusConstraint.setEditable(false);
+        statusConstraint.setFocusable(false);
         statusConstraint.setColumns(15);
         this.add(new JLabel("Limits: "));
         this.add(statusConstraint);
 
         statusPosition.setEditable(false);
+        statusPosition.setFocusable(false);
         statusPosition.setColumns(15);
         this.add(new JLabel("Postion: "));
         this.add(statusPosition);
 
         statusRotation.setEditable(false);
+        statusRotation.setFocusable(false);
         statusRotation.setColumns(6);
         this.add(new JLabel("Rotation: "));
         this.add(statusRotation);
 
         statusPen.setEditable(false);
+        statusPen.setFocusable(false);
         statusPen.setColumns(4);
         this.add(new JLabel("Pen: "));
         this.add(statusPen);
 
+        statusColour.setFocusable(false);
         statusColour.setPreferredSize(new Dimension(10,10));
         this.add(new JLabel("Colour: "));
         this.add(statusColour);

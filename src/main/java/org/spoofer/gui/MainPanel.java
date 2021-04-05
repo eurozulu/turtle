@@ -69,6 +69,14 @@ public class MainPanel extends JPanel {
     }
 
     private void buildMainPanel(ActionListener runListener) {
+        this.setFocusable(true);
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MainPanel.this.requestFocusInWindow();
+            }
+        });
+
         commands.setColumns(50);
         commands.setEditable(true);
 
@@ -109,6 +117,7 @@ public class MainPanel extends JPanel {
 
         console.setPreferredSize(new Dimension(200, 200));
         console.setEditable(false);
+        console.setFocusable(false);
         console.setBackground(Color.LIGHT_GRAY);
 
         JPopupMenu consolePopup = new JPopupMenu("Console");

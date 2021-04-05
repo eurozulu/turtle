@@ -60,7 +60,7 @@ public class Turtle {
      * @param rootPane root pane to receive events
      */
     private void registerKeyEvents(JRootPane rootPane) {
-        InputMap inputMap = rootPane.getInputMap();
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = rootPane.getActionMap();
 
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), MainMenu.BUTTON_COMMAND_FORWARD);
