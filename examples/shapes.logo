@@ -1,4 +1,27 @@
-pattern square [ repeat 4 [ fd {} rt 90 ]]
-pattern triangle [ repeat 3 [ fd {} rt 120 ]]
-pattern rectangle [repeat 2 [ fd {} rt 90 fd {} rt 90]]
+# Patterns defined as basic shape name:
+pattern square [ repeat 4 [ rt 90 fd {} ]]
+pattern triangle [ repeat 3 [ lt 120 fd {} ]]
+pattern rectangle [repeat 2 [ fd {} lt 90 fd {} lt 90 ]]
 pattern octagon [repeat 6 [ fd {} rt 60 ] ]
+
+# absolute position patterns, to move turtle
+pattern move_top_left [ hm pu lt 90 fd 90 rt 90 fd 90 pd ]
+pattern move_top_right [ hm pu rt 90 fd 90 lt 90 fd 90 pd ]
+pattern move_bottom_left [ hm pu lt 90 fd 90 lt 90 fd 80 rotate 180 pd ]
+pattern move_bottom_right [ hm pu rt 90 fd 90 rt 90 fd 90 rotate 180 pd ]
+
+cleanscreen
+
+move_top_left 
+square 40
+
+move_top_right
+triangle 40
+
+move_bottom_right
+rectangle 40
+
+move_bottom_left
+octagon 20
+
+home

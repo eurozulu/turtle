@@ -4,18 +4,15 @@ pattern rectangle [repeat 2 [ fd 50 rt 90 fd 25 rt 90]]
 
 cleanscreen
 pen down
-turtle off
+# turtle off
 
-rectangle
-triangle
-square
-
+home
 repeat 180 [ square rotate 2 ]
 
+home
 repeat 180 [ triangle rotate 2 ]
 
+home
 repeat 180 [ rectangle rotate 2 ]
 
-
-
-
+home
