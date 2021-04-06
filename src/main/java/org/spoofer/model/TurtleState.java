@@ -77,6 +77,7 @@ public class TurtleState {
         } else
               homePos = new TurtlePosition(x, y);
         turtlePath.add(homePos);
+        getTurtlePosition().rotation = 0;
     }
 
     public void setConstraint(Dimension size) {
